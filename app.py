@@ -1,6 +1,5 @@
 from flask import Flask, request, Blueprint, jsonify
 from flask_cors import CORS
-# from crud_mysql import crud
 from mysql_database import Database, DatabaseCreds
 import os, logging
 
@@ -12,7 +11,7 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
 
-bp = Blueprint('service', __name__,
+bp = Blueprint('progress', __name__,
                         template_folder='templates')
 
 @bp.route("/task", methods=["POST"])
@@ -29,12 +28,20 @@ def get_task():
 	return jsonify(task), 200
 
 @bp.route("/finish_step", methods=["POST"])
-def update_task():
+def finish_step():
 	task_id = request.args["task_id"]
 	data = request.get_json()
 	task = Task.get(task_id)
 	task.finish_step(data["step_name"], data["success"] == "true")
 	return jsonify(f"tasks step {data["step_name"]} finished"), 200
+
+@bp.route("/start_step", methods=["POST"])
+def start_step():
+	task_id = request.args["task_id"]
+	data = request.get_json()
+	task = Task.get(task_id)
+	task.start_step(data["step_name"])
+	return jsonify(f"tasks step {data["step_name"]} started"), 200
 
 app.register_blueprint(bp, url_prefix="/api/progress") 
 

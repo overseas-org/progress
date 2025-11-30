@@ -32,7 +32,9 @@ class Step:
             })
 
     def start(self):
+        self._done = False
         self.status = "in progress"
+        self.update_db()
 
     def done(self, success=True):
         self._done = True
@@ -93,19 +95,39 @@ class Task:
 
     def start(self):
         self.status = "in progress"
-        self.steps[0].start()
+        for step in self.steps:
+            if step.step_index == 0:
+                step.start()
+                break
+        self.update_db()
+
+    def start_step(self, step_name):
+        self.status = "in progress"
+        self.done = False
+        for step in self.steps:
+            if step.name == step_name:
+                step.start()
+                break
+        self.check_status()
+        self.update_db()
 
     def check_status(self):
         done = True
         success = True
+        pending = True
         for step in self.steps:
+            if step.status != "pending":
+                pending = False
             if not step.is_done():
                 done = False
             if not step.get_status() == "success":
                 success = False
         self._done = done
         if not done:
-            pass
+            if pending:
+                self.status = "pending"
+            else:
+                self.status = "in progress"
         elif success:
             self.status = "success"
         else:
