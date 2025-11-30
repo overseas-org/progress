@@ -1,0 +1,28 @@
+url:
+/api/progress/task POST 
+
+example data:
+{
+		"name": "task1", 
+		"steps": [
+			{
+				"name": "step1",
+				"description": "the first step"
+			},
+			{
+				"name": "step2",
+				"description": "the second step"
+			}
+			]
+	}
+
+url:
+/api/progress/task?task_id=1  GET
+
+url:
+/api/progress/finish_step?task_id=1  POST
+
+example data: {
+    "step_name": "step1",
+    "success": "true"
+}

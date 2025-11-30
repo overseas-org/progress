@@ -1,10 +1,42 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, Blueprint, jsonify
+from flask_cors import CORS
+# from crud_mysql import crud
+from mysql_database import Database, DatabaseCreds
+import os, logging
+
+
+from progress.task import Task
+from vars import db_creds
 
 app = Flask(__name__)
 
-@app.route("/progress", methods=["GET"])
-def get_progress():
-	return jsonify(f"reply from endpoint get_progress")
+CORS(app, supports_credentials=True)
+
+bp = Blueprint('service', __name__,
+                        template_folder='templates')
+
+@bp.route("/task", methods=["POST"])
+def create_task():
+	data = request.get_json()
+	task = Task(data["name"], data["steps"])
+	task_id = task.save_to_db()
+	return jsonify({"task_id": task_id}), 200
+
+@bp.route("/task", methods=["GET"])
+def get_task():
+	task_id = request.args["task_id"]
+	task = Task.get(task_id, as_dict=True)
+	return jsonify(task), 200
+
+@bp.route("/finish_step", methods=["POST"])
+def update_task():
+	task_id = request.args["task_id"]
+	data = request.get_json()
+	task = Task.get(task_id)
+	task.finish_step(data["step_name"], data["success"] == "true")
+	return jsonify(f"tasks step {data["step_name"]} finished"), 200
+
+app.register_blueprint(bp, url_prefix="/api/progress") 
 
 if __name__ == "__main__":
 	app.run(host="0.0.0.0", debug=True)

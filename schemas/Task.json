@@ -1,0 +1,17 @@
+{
+    "task": 
+    {
+        "name": "VARCHAR(100)",
+        "status": "VARCHAR(100)",
+        "done": "VARCHAR(10)"
+    },
+
+    "step": {
+        "name": "VARCHAR(100)",
+        "description": "VARCHAR(100)",
+        "status": "VARCHAR(100)",
+        "done": "VARCHAR(10)",
+        "task_id": "INT",
+        "step_index": "INT"
+    }
+}

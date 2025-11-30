@@ -17,16 +17,9 @@ spec:
         app: progress
         service: progress
     spec:
-      volumes:
-      - name: progress-volume
-        persistentVolumeClaim:
-          claimName: progress
       containers:
       - name: progress-container
         image: hhana982/progress:1.<version>
         ports:
         - containerPort: 5000
-        volumeMounts:
-        - mountPath: "/"
-          name: progress-volume
         env: 
