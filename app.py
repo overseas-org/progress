@@ -27,6 +27,13 @@ def get_task():
 	task = Task.get(task_id, as_dict=True)
 	return jsonify(task), 200
 
+@bp.route("/start_task", methods=["POST"])
+def start_task():
+	task_id = request.args["task_id"]
+	task = Task.get(task_id)
+	task.start()
+	return jsonify(f"task {task.name} started"), 200
+
 @bp.route("/finish_step", methods=["POST"])
 def finish_step():
 	task_id = request.args["task_id"]
