@@ -26,3 +26,10 @@ example data: {
     "step_name": "step1",
     "success": "true"
 }
+
+url:
+/api/progress/start_step?task_id=1  POST
+
+example data: {
+    "step_name": "step1"
+}
