@@ -9,4 +9,4 @@ spec:
     - ReadWriteOnce
   storageClassName: local-path
   hostPath:
-    path: "/data/dbs-local-storage/service"
+    path: "/data/dbs-local-storage/progress-db"
