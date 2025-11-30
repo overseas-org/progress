@@ -23,3 +23,11 @@ spec:
         ports:
         - containerPort: 5000
         env: 
+        - name: DB_HOST
+          value: "progress-db"
+        - name: DB_USER
+          value: "root"
+        - name: DB_PASSWORD
+          value: "rootpassword"
+        - name: DB_PORT
+          value: "3306"
